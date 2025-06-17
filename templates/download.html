@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="download_btn">Download</button>
+
+    <div id="preview"></div>
+
+    <script>
+      // Get data from localStorage
+      const processedImage = localStorage.getItem("processedImage");
+      const fileName = localStorage.getItem("filename");
+
+      if (processedImage) {
+        // Show preview
+        const img = document.createElement("img");
+        img.src = "data:image/png;base64," + processedImage;
+        img.style.maxWidth = "100%";
+        document.getElementById("preview").appendChild(img);
+      } else {
+        window.location.href = "/";
+      }
+    </script>
+    <script src="/static/js/download.js"></script>
+  </body>
+</html>

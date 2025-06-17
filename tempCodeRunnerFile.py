@@ -13,7 +13,8 @@ def index():
 
 @app.route('/download', methods=['POST'])
 def download():
-    try:
+     if request.method == 'POST':
+
         if 'file' not in request.files:
             return 'No file part', 400
         
@@ -38,20 +39,15 @@ def download():
             })
 
             return response
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500    
 
 
 @app.route('/download_page', methods=['GET'])
 def download_page():
-    try:    
-        processed_image = request.args.get('processed_image')
-        original_image = request.args.get('original_image')
-        filename = request.args.get('filename')
-        
-        return render_template('download.html', processed_image=processed_image, original_image=original_image, filename=filename)
-    except Exception as e:
-        return str(e), 500
+    processed_image = request.args.get('processed_image')
+    original_image = request.args.get('original_image')
+    filename = request.args.get('filename')
+    
+    return render_template('download.html', processed_image=processed_image, original_image=original_image, filename=filename)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5100, debug=True)

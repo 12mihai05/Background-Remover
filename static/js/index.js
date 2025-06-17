@@ -1,43 +1,37 @@
-const download_btn = document.getElementById('download_btn');
-
-document.getElementById('uploadForm').addEventListener('submit', async function(event){
+document
+  .getElementById("uploadForm")
+  .addEventListener("submit", function (event) {
     event.preventDefault();
+    console.log("Form submitted");
 
-    try {
-        const response = await fetch('/', {
-            method: 'POST',
-            body: new FormData(this)
-        });
+    const formData = new FormData(this);
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+    // Show loading state
+    document.getElementById("status").textContent = "Processing...";
+
+    fetch("/download", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        console.log("Response status:", response.status);
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Response received:", data);
+        if (data.error) {
+          throw new Error(data.error);
         }
-
-        const data = await response.json();
-        console.log('Received data:', data);
-
-        const blob = new Blob([data.blob], {type: 'image/png'});
-        const filename = data.filename;
-        
-        console.log('Blob:', blob);
-        console.log('Filename:', filename);
-
-        const url = window.URL.createObjectURL(blob);
-        console.log('Blob URL:', url);
-
-        download_btn.style.display = 'block';
-        download_btn.addEventListener('click', function(){
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', filename);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-        });
-
-
-    } catch (error) {
-        console.error('Error:', error);
-    }
-});
+        if (data.blob) {
+          // Store data locally and redirect
+          localStorage.setItem("processedImage", data.blob);
+          localStorage.setItem("filename", data.filename);
+          window.location.href = "/download_page";
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        document.getElementById("status").textContent =
+          "Error: " + error.message;
+      });
+  });

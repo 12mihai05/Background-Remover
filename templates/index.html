@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <form id="uploadForm" action="/" method="post" enctype="multipart/form-data">
-        <input id="fileInput" type="file" name="file" />
-        <input type="submit" value="Remove Background"/>
+  </head>
+  <body>
+    <form
+      id="uploadForm"
+      action="/"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input id="fileInput" type="file" name="file" accept="image/*" required />
+      <input type="submit" value="Remove Background" />
     </form>
-    
-    <button id="download_btn" style="display: none;">Download </button>
 
-    <script src="/static/js/index.js">
+    <div id="status"></div>
+
+    <script>
+      var processedImage = "{{ processed_image }}";
+      var originalImage = "{{ original_image }}";
+      var fileName = "{{ filename }}";
+
+      console.log(processedImage);
     </script>
-</body>
+    <!-- Include your JavaScript file -->
+    <script src="/static/js/index.js"></script>
+  </body>
 </html>
